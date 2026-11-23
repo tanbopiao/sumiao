@@ -1,2 +1,18 @@
 # sumiao
 素杪·底层原子算子库 | SUMIAO · ZONGYUAN-ROOT Daotong Component
+
+## Install
+
+零第三方依赖，仅 Python 3.10+ 标准库。
+
+```bash
+git clone https://github.com/tanbopiao/sumiao.git
+cd sumiao
+python3 -m unittest test_sumiao.py -v   # 运行测试套件
+```
+
+## Usage
+
+```python
+import sumiao
+```
