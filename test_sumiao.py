@@ -1,4 +1,4 @@
-"""素杪（SUMIAO）算子骨架单测：名帖完整、桩位齐整、只增不覆盖。"""
+"""素杪（SUMIAO）算子单测：名帖完整、行为达标、只增不覆盖。"""
 import unittest
 
 from sumiao import Sumiao
@@ -15,13 +15,13 @@ class TestSumiao(unittest.TestCase):
         self.assertTrue(d["anchor"].startswith("Ω₀⊂⊙∞⊂Ω"))
         self.assertTrue(d["mingwen"])
 
-    def test_register_stub(self):
-        with self.assertRaises(NotImplementedError):
-            self.op.register(None)
-
-    def test_call_stub(self):
-        with self.assertRaises(NotImplementedError):
-            self.op.call(None, None)
+    def test_register_call(self):
+        name = self.op.register(lambda a, b: a + b)
+        self.assertEqual(name, "add" if False else "<lambda>")
+        self.op.ops["加"] = lambda a, b: a + b
+        self.assertEqual(self.op.call("加", (1, 2)), 3)
+        with self.assertRaises(KeyError):
+            self.op.call("无有", ())
 
 
 if __name__ == "__main__":
