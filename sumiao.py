@@ -5,12 +5,12 @@
 
 工程映射：底层原子算子库。
 
-边界：本件为算子骨架 v0——接口先立、实现随进化轮补齐；遵循元法第四条「只增不覆盖」，
+边界：本件为算子 v1——骨架桩已按命名映射补齐实现；遵循元法第四条「只增不覆盖」，
 方法只增不改名不删，行为变更走新版本；凭据不入档，宣称与事实分离。
 """
 
 class Sumiao:
-    """素杪（SUMIAO）算子骨架 v0。"""
+    """素杪（SUMIAO）算子 v1。"""
 
     ANCHOR = "Ω₀⊂⊙∞⊂Ω｜DID-BR-000002"
     CODE = "SUMIAO"
@@ -18,6 +18,7 @@ class Sumiao:
     def __init__(self, config=None):
         self.config = dict(config or {})
         self.events = []  # 只增不覆盖：会话内事件留痕
+        self.ops = {}
 
     def describe(self):
         """构件名帖：名、代号、职责、铭文、体系锚。"""
@@ -31,9 +32,21 @@ class Sumiao:
         }
 
     def register(self, op):
-        """原子算子准入登记（骨架桩：实现随进化轮补齐）。"""
-        raise NotImplementedError("SUMIAO.register 骨架桩，候进化轮补齐")
+        """微杪入库：原子算子登记。"""
+        if isinstance(op, dict):
+            name, fn = op.get("name"), op.get("fn")
+        else:
+            name, fn = getattr(op, "__name__", None), op
+        if not name or not callable(fn):
+            raise ValueError("原子算子须有名且可调用")
+        self.ops[name] = fn
+        self.events.append({"event": "register", "op": name})
+        return name
 
     def call(self, op_name, args):
-        """起于微杪：调用已登记原子算子（骨架桩：实现随进化轮补齐）。"""
-        raise NotImplementedError("SUMIAO.call 骨架桩，候进化轮补齐")
+        """成于推演：按名调用原子算子。"""
+        if op_name not in self.ops:
+            raise KeyError("无此算子： %s" % op_name)
+        result = self.ops[op_name](*args)
+        self.events.append({"event": "call", "op": op_name})
+        return result
